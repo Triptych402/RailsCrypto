@@ -11,8 +11,10 @@
 
   <body>
   	<%= render 'home/navbar'%>
+
     <div class="container">
-    <%= yield %>
+      <%= render 'home/flash' %>
+      <%= yield %>
     </div>
   </body>
 </html>
