@@ -8,7 +8,7 @@ end
 
 
 gem 'rails', '~> 5.1.7'
-gem 'sqlite3', '< 1.4'
+
 gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -23,15 +23,19 @@ gem 'jquery-rails'
 group :development, :test do
 
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-
+  gem 'sqlite3', '< 1.4'
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
 end
 
 group :development do
-
+  gem 'sqlite3', '< 1.4'
   gem 'web-console', '>= 3.3.0'
 end
 
+group :production do
+  gem 'pg'
+  gem 'rails_12factor', '~> 0.0.3'
+end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
