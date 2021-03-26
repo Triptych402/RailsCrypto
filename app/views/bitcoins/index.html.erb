@@ -1,0 +1,66 @@
+<h1>코인 리스트</h1>
+
+<br/>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>코인명</th>
+      <th>실시간 평단</th>
+      <th>코인랭크</th>
+      <th>1h</th>
+      <th>1d</th>
+      <th>1w</th>
+      <th>보유금</th>
+      <th>투자금</th>
+      <th>손익</th>
+      
+      
+      <th>Cost per</th>
+      <th>Amount owned</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bitcoins.each do |bitcoin| %>
+            <% if bitcoin.user_id == current_user.id %>
+            <% if bitcoin.symbol %>
+                <% bitcoin.symbol = bitcoin.symbol.upcase %>
+            <% end %>
+             <tr>
+            <% for x in @lookup_bitcoin['data'] %>
+            
+            <% if bitcoin.symbol == x['symbol'] %>
+                 <td><%= link_to x['name'], bitcoin%></td>
+                 <td>$<%= x['quote']['USD']['price'].to_d(4) %></td>
+                 <td><%= x['cmc_rank'] %></td>
+
+                 <td><%= x['quote']['USD']['percent_change_1h'].to_d(3) %>%</td>
+                 <td><%= x['quote']['USD']['percent_change_24h'].to_d(3) %>%</td>
+                 <td><%= x['quote']['USD']['percent_change_7d'].to_d(3) %>%</td>
+
+                 <td>$<%= x['quote']['USD']['price'].to_d(4) * bitcoin.amount_owned %></td>
+                 <td>$<%= bitcoin.cost_per * bitcoin.amount_owned %></td>
+                 <td>$<%= (x['quote']['USD']['price'].to_d(4) * bitcoin.amount_owned) - (bitcoin.cost_per * bitcoin.amount_owned) %></td>
+                 <% @profit_loss += (x['quote']['USD']['price'].to_d(4) * bitcoin.amount_owned) - (bitcoin.cost_per * bitcoin.amount_owned) %>
+            <% end %>
+            <% end %>
+       
+          
+          
+          <td>$<%= bitcoin.cost_per %></td>
+          <td><%= bitcoin.amount_owned %></td>
+          
+          
+        </tr>
+        <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br/>
+<br/>
+<strong>전체 손익: </strong> <%= number_to_currency(@profit_loss) %>
+<br/>
+<br/>
+<%= link_to '새 코인 추가', new_bitcoin_path, class: "btn btn-default" %>
